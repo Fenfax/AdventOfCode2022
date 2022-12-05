@@ -1,9 +1,18 @@
 fun main() {
     fun part1(input: Map<Int, MutableList<Char>>, commands: List<List<Int>>): String {
-
-        for (number in commands) {
+        commands.forEach { number ->
             input[number[1]]?.let {
                 input[number[2]]?.addAll((1..number[0]).map { _ -> it.removeLast() })
+            }
+        }
+
+        return input.map { it.value.last() }.joinToString("")
+    }
+
+    fun part2(input: Map<Int, MutableList<Char>>, commands: List<List<Int>>): String {
+        commands.forEach { number ->
+            input[number[1]]?.let {
+                input[number[2]]?.addAll((1..number[0]).map { _ -> it.removeLast() }.reversed())
             }
         }
 
@@ -21,7 +30,7 @@ fun main() {
 
     val input = readInput("Day05")
     val splitInput = input.splitWhen { it == "" }
-    val groups = generateStorage(splitInput[0])
     val commands = splitInput[1].map { it.split(" ").filter { s -> s.all { c -> c.isDigit() } }.map { s -> s.toInt() } }
-    println(part1(groups, commands))
+    println(part1(generateStorage(splitInput[0]), commands))
+    println(part2(generateStorage(splitInput[0]), commands))
 }
