@@ -27,7 +27,11 @@ fun main() {
         val work = input.toList()
 
         return (1..input.length).toList()
-            .takeWhile { work.subList(it, it+ uniqueAmount).let {list -> list.size != list.distinct().size } }.last() + uniqueAmount + 1
+            .takeWhile { work.subList(it, it + uniqueAmount).let { list -> list.size != list.distinct().size } }.last() + uniqueAmount + 1
+    }
+
+    fun solveEvenShorter(input: String, uniqueAmount: Int): Int {
+        return input.windowed(uniqueAmount).takeWhile { it.length != it.toSet().size }.count().plus(uniqueAmount)
     }
 
 
@@ -36,4 +40,6 @@ fun main() {
     println(solve(input, 14))
     println(solveShort(input[0], 4))
     println(solveShort(input[0], 14))
+    println(solveEvenShorter(input[0], 4))
+    println(solveEvenShorter(input[0], 14))
 }
