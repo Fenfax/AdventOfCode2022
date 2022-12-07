@@ -59,8 +59,19 @@ fun main() {
                 commandDir.dirs.sumOf{ part1(it,currentSize + newSize) }
     }
 
+    fun part2(commandDir: CommandDir, currentMin: Int, sizeNeeded: Int): Int{
+        val newSize = if (commandDir.getSize() >= sizeNeeded) commandDir.getSize() else return currentMin
+
+        if (commandDir.dirs.size == 0)
+            return newSize
+
+        return if (newSize <= currentMin ) commandDir.dirs.minOf { part2(it, newSize, sizeNeeded) } else currentMin
+    }
+
     val input = readInput("Day07")
-    println(part1(parseInput(input), 0))
+    val rootDir = parseInput(input)
+    println(part1(rootDir, 0))
+    println(part2(rootDir, rootDir.getSize(), 30_000_000 - 70_000_000 + rootDir.getSize()))
 }
 
 data class CommandFile(val name: String, val size: Int)
