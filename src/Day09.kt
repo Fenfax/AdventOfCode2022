@@ -1,5 +1,4 @@
 import java.awt.Point
-import kotlin.math.abs
 import kotlin.math.sign
 
 fun main() {
@@ -18,22 +17,8 @@ fun main() {
                 }
                 for (i in (1 until pointCount)) {
                     if (points[i - 1].distance(points[i]) > 1.5) {
-                        var translateX = 0
-                        var translateY = 0
-
-                        if (abs(points[i - 1].x - points[i].x) > 1) {
-                            translateX = points[i - 1].x - points[i].x
-                            if (abs(points[i - 1].y - points[i].y) > 0) {
-                                translateY = points[i - 1].y - points[i].y
-                            }
-                        }
-
-                        if (abs(points[i - 1].y - points[i].y) > 1) {
-                            translateY = points[i - 1].y - points[i].y
-                            if (abs(points[i - 1].x - points[i].x) > 0) {
-                                translateX = points[i - 1].x - points[i].x
-                            }
-                        }
+                        val translateX = points[i - 1].x - points[i].x
+                        val translateY = points[i - 1].y - points[i].y
 
                         points[i].translate(translateX.sign, translateY.sign)
                         if (i == pointCount - 1) {
