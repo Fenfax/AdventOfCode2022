@@ -68,10 +68,10 @@ fun main() {
         return cameFrom
     }
 
-    fun getPath(paths: Map<MapPoint, Optional<MapPoint>>, start: MapPoint, end: MapPoint): List<MapPoint>{
+    fun getPath(paths: Map<MapPoint, Optional<MapPoint>>, end: MapPoint): List<MapPoint>{
         val path = mutableListOf(end)
         var currentPos = end
-        while (paths[currentPos]?.isPresent == true || currentPos != start){
+        while (paths[currentPos]?.isPresent == true){
             path.add(paths[currentPos]?.get()!!)
             currentPos = paths[currentPos]?.get()!!
         }
@@ -84,13 +84,25 @@ fun main() {
         val end = graph.points[getFirstWithChar(input, 'E')]!!
 
         val paths = searchPath(graph, start, end)
-        val startToEnd = getPath(paths, start, end)
+        val startToEnd = getPath(paths, end)
 
         return startToEnd.size - 1
     }
 
-    val input = readInput("Day12_test")
+    fun part2(input: List<String>): Int {
+        val graph = genPoints(input)
+        val end = graph.points[getFirstWithChar(input, 'E')]!!
+
+        return graph.points.values.asSequence()
+            .filter{it.height == 1}
+            .map { getPath(searchPath(graph, it, end), end) }
+            .filter { it.size > 1 }
+            .minOf { it.size - 1 }
+    }
+
+    val input = readInput("Day12")
     println(part1(input))
+    println(part2(input))
 }
 
 data class MapPoint(val pos: Point, val height: Int)
