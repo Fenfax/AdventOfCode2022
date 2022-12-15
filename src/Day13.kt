@@ -1,3 +1,5 @@
+import org.apache.commons.collections4.ListUtils
+
 fun main() {
 
     fun parseSingleSignal(s: String): Any {
@@ -93,8 +95,21 @@ fun main() {
         return signalValidation.foldIndexed(0) { index, acc, b -> if (b != false) acc + index + 1 else acc }
     }
 
+    fun part2(input: List<String>): Int {
+
+        val dividerPackages = listOf("[[2]]", "[[6]]").map { parseSingleSignal(it) }
+
+        val signalList = input.filter { it != "" }.map { parseSingleSignal(it) }
+
+        val sortedList: List<Any> = ListUtils.union(signalList, dividerPackages)
+            .sortedWith { o1: Any, o2: Any -> if (compareSignal(Pair(o1, o2))!!) -1 else 1 }
+
+        return sortedList.foldIndexed(1) { index, acc, signal -> if (dividerPackages.contains(signal)) acc * (index + 1) else acc }
+    }
+
     val input = readInput("Day13")
     println(part1(input))
+    println(part2(input))
 }
 
 fun <T> Sequence<T>.takeWhileInclusive(predicate: (T) -> Boolean) = sequence {
